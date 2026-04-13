@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    environment:
+      PORT: 8000
+      REDIS_URL: redis://redis:6379/0
+      PUBLIC_BASE_URL: http://localhost:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./results:/app/results
+      - ./logs:/app/logs
+
+  worker:
+    build: .
+    command: python workers/worker.py
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      PUBLIC_BASE_URL: http://localhost:8000
+    depends_on:
+      - redis
+    volumes:
+      - ./results:/app/results
+      - ./logs:/app/logs

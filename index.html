@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Holiday Hunter Elite</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">AH</div>
+        <div>
+          <div class="eyebrow">AI Holiday Hunter Elite</div>
+          <h1>Let the engine hunt. You steer the brief.</h1>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="#planner">Planner</a>
+        <a href="#market">Market</a>
+        <a href="#results">Results</a>
+        <a href="#evidence">Evidence</a>
+      </nav>
+      <div class="topbar-actions">
+        <button id="saveProfileBtn" class="ghost">Save brief</button>
+        <button id="liveBtn">Run live scan</button>
+      </div>
+    </header>
+
+    <section class="hero-section">
+      <div class="hero-copy">
+        <div class="eyebrow">Website mode</div>
+        <h2 id="heroTitle">Loading your market view…</h2>
+        <p id="heroText">This engine searches across sites in the background, ranks stronger near-final options higher, and surfaces both exact fits and smart near misses.</p>
+        <div class="hero-actions">
+          <button id="demoBtn" class="secondary">Demo scan</button>
+          <button id="autoBtn" class="secondary">Autopilot</button>
+          <button id="notifyBtn" class="ghost">Refresh alerts</button>
+        </div>
+      </div>
+      <div class="hero-summary card">
+        <div class="summary-row"><span>Search profile</span><strong id="profileBanner">Loading…</strong></div>
+        <div class="summary-row"><span>Background status</span><strong id="activeJobSummary">Idle</strong></div>
+        <div class="summary-row"><span>Best seen price</span><strong id="bestPriceHeadline">—</strong></div>
+        <div class="run-status-block">
+          <div class="run-status-head">
+            <div>
+              <div class="eyebrow">Live run status</div>
+              <strong id="jobStageLabel">Waiting to start</strong>
+            </div>
+            <strong id="jobPctLabel">0%</strong>
+          </div>
+          <div class="progress-track"><div id="jobProgressBar" class="progress-bar"></div></div>
+          <div class="run-status-meta">
+            <span id="jobStatusText">No search running right now.</span>
+            <span id="jobTiming">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-grid" id="statsGrid"></section>
+
+    <section id="planner" class="planner-grid">
+      <article class="card planner-card">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Planner</div>
+            <h3>Describe the outcome you want</h3>
+          </div>
+          <button id="clearBtn" class="ghost small">Reset filters</button>
+        </div>
+
+        <label for="overviewPrompt">What you want overall</label>
+        <textarea id="overviewPrompt" rows="5" placeholder="Somewhere warm, near the beach, in June or July, for 4 adults, one 5 year old and one infant. Price is key."></textarea>
+
+        <div class="input-grid two">
+          <div><label for="originAirport">Flying from</label><input id="originAirport" type="text" placeholder="Newcastle" /></div>
+          <div><label for="months">Months</label><input id="months" type="text" placeholder="6,7" /></div>
+          <div><label for="tripLengths">Trip lengths</label><input id="tripLengths" type="text" placeholder="7,10,11,14" /></div>
+          <div><label for="rooms">Rooms</label><input id="rooms" type="number" min="1" value="2" /></div>
+        </div>
+
+        <div class="traveller-strip">
+          <div><label for="adults">Adults</label><input id="adults" type="number" min="1" value="4" /></div>
+          <div><label for="children">Children</label><input id="children" type="number" min="0" value="1" /></div>
+          <div><label for="childAge">Child age</label><input id="childAge" type="number" min="0" value="5" /></div>
+          <div><label for="infants">Infants</label><input id="infants" type="number" min="0" value="1" /></div>
+        </div>
+      </article>
+
+      <article class="card controls-card">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Controls</div>
+            <h3>Move the market to fit you</h3>
+          </div>
+        </div>
+        <div class="slider-grid">
+          <div class="control-group">
+            <label for="buyLine">Budget ceiling</label>
+            <input id="buyLine" type="range" min="1500" max="6000" step="50" />
+            <div class="range-readout"><span>£1,500</span><strong id="buyLineValue">£3,000</strong><span>£6,000</span></div>
+          </div>
+          <div class="control-group">
+            <label for="heatFloor">Minimum heat</label>
+            <input id="heatFloor" type="range" min="20" max="40" step="1" />
+            <div class="range-readout"><span>20°C</span><strong id="heatFloorValue">26°C</strong><span>40°C</span></div>
+          </div>
+          <div class="control-group">
+            <label for="beachTarget">Preferred beach walk</label>
+            <input id="beachTarget" type="range" min="1" max="30" step="1" />
+            <div class="range-readout"><span>1 min</span><strong id="beachTargetValue">10 min</strong><span>30 min</span></div>
+          </div>
+          <div class="control-group">
+            <label for="searchVolume">Search volume</label>
+            <input id="searchVolume" type="range" min="40" max="400" step="10" />
+            <div class="range-readout"><span>40</span><strong id="searchVolumeValue">180</strong><span>400</span></div>
+          </div>
+          <div class="control-group">
+            <label for="strictness">Strictness</label>
+            <input id="strictness" type="range" min="0" max="100" step="1" />
+            <div class="range-readout"><span>Explore</span><strong id="strictnessValue">72</strong><span>Strict</span></div>
+          </div>
+          <div class="control-group">
+            <label for="checkoutDepth">Checkout depth</label>
+            <input id="checkoutDepth" type="range" min="1" max="8" step="1" />
+            <div class="range-readout"><span>Light</span><strong id="checkoutDepthValue">4</strong><span>Deep</span></div>
+          </div>
+        </div>
+
+        <div class="toggle-grid">
+          <label class="toggle"><input id="prefFreeChild" type="checkbox" /> Prefer free child place cues</label>
+          <label class="toggle"><input id="prefFamilyRoom" type="checkbox" /> Prefer family room or apartment</label>
+          <label class="toggle"><input id="prefBreakfast" type="checkbox" /> Prefer breakfast or better</label>
+          <label class="toggle"><input id="poolOnly" type="checkbox" /> Pool only in current results</label>
+          <label class="toggle"><input id="breakfastOnly" type="checkbox" /> Breakfast or better only</label>
+          <label class="toggle"><input id="alertsOnly" type="checkbox" /> Drop alerts only</label>
+          <label class="toggle"><input id="freeChildOnly" type="checkbox" /> Free child place only</label>
+          <label class="toggle"><input id="familyRoomOnly" type="checkbox" /> Family room only</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="market" class="market-grid">
+      <article class="card map-card">
+        <div class="section-head"><div><div class="eyebrow">Market map</div><h3>See the market by destination</h3></div><span id="mapCaption">No results yet</span></div>
+        <div id="map"></div>
+        <div class="map-legend-wrap">
+          <div class="map-legend-head"><strong>Price guide</strong><span>Click a band to filter the map and results.</span></div>
+          <div id="mapLegend" class="map-legend"></div>
+        </div>
+        <div id="mapList" class="map-list"></div>
+      </article>
+      <article class="card side-insights">
+        <div class="section-head"><div><div class="eyebrow">Provider order</div><h3>Where the engine is hunting first</h3></div><span id="planMeta"></span></div>
+        <div id="providerPlan" class="provider-plan"></div>
+        <div class="divider"></div>
+        <div class="section-head"><div><div class="eyebrow">Background queue</div><h3>Runs in progress</h3></div><button id="reloadBtn" class="ghost small">Refresh</button></div>
+        <div id="jobsList" class="jobs-list"></div>
+      </article>
+    </section>
+
+    <section class="rail-grid">
+      <article class="card">
+        <div class="section-head"><div><div class="eyebrow">Best now</div><h3>Strongest options right now</h3></div></div>
+        <div id="bestRail" class="mini-rec-grid"></div>
+      </article>
+      <article class="card">
+        <div class="section-head"><div><div class="eyebrow">Worth a look</div><h3>Near misses the engine still likes</h3></div></div>
+        <div id="worthRail" class="mini-rec-grid"></div>
+      </article>
+    </section>
+
+    <section id="results" class="card results-card">
+      <div class="section-head split">
+        <div>
+          <div class="eyebrow">Results explorer</div>
+          <h3>Search and compare everything captured so far</h3>
+        </div>
+      </div>
+      <div class="filter-grid">
+        <div><label for="query">Search</label><input id="query" type="text" placeholder="Hotel, destination, provider, board, free child" /></div>
+        <div><label for="sourceSite">Source</label><select id="sourceSite"><option value="">All sources</option></select></div>
+        <div><label for="sortBy">Sort by</label><select id="sortBy"><option value="best">Best overall</option><option value="best_true_price">Best true price</option><option value="price_low">Lowest price</option><option value="beach">Closest beach</option><option value="hottest">Hottest</option><option value="family_saver">Family saver</option><option value="drop_alert">Drop alerts</option></select></div>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section id="evidence" class="report-grid">
+      <article class="card report-card">
+        <div class="section-head"><div><div class="eyebrow">Truth-ranked shortlist</div><h3>What the engine would look at first</h3></div></div>
+        <pre id="out_truth"></pre>
+      </article>
+      <article class="card report-card">
+        <div class="section-head"><div><div class="eyebrow">Operator pack</div><h3>Summary of the run</h3></div></div>
+        <pre id="out_brief"></pre>
+      </article>
+      <article class="card report-card">
+        <div class="section-head"><div><div class="eyebrow">Provider tuning</div><h3>Where live behaviour still bites</h3></div></div>
+        <pre id="out_tuning"></pre>
+      </article>
+      <article class="card report-card">
+        <div class="section-head"><div><div class="eyebrow">Historical pricing</div><h3>Buy now or watch</h3></div></div>
+        <pre id="out_history"></pre>
+      </article>
+    </section>
+
+    <div id="takeoverDrawer" class="takeover-drawer hidden">
+      <div class="drawer-card">
+        <div class="section-head split">
+          <div><div class="eyebrow">Manual takeover</div><h3 id="takeoverTitle">Resume a sticky provider flow</h3></div>
+          <button id="closeTakeover" class="ghost small">Close</button>
+        </div>
+        <p id="takeoverText">Open the provider and saved evidence, continue the session if needed, then come back and refresh results.</p>
+        <div class="drawer-actions">
+          <button id="takeoverOpen" class="secondary">Open provider and evidence</button>
+        </div>
+        <div class="drawer-meta" id="takeoverMeta"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

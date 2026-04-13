@@ -1,0 +1,35 @@
+services:
+  - type: redis
+    name: ai-holiday-hunter-redis
+    ipAllowList: []
+    plan: starter
+
+  - type: web
+    name: ai-holiday-hunter-web
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: ai-holiday-hunter-redis
+          property: connectionString
+      - key: PUBLIC_BASE_URL
+        value: https://ai-holiday-hunter-web.onrender.com
+      - key: WEB_CONCURRENCY
+        value: "2"
+
+  - type: worker
+    name: ai-holiday-hunter-worker
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: python workers/worker.py
+    plan: starter
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: ai-holiday-hunter-redis
+          property: connectionString

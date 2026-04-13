@@ -1,0 +1,211 @@
+{
+  "group": {
+    "adults": 4,
+    "children": 1,
+    "child_ages": [
+      5
+    ],
+    "child_age": 5,
+    "infants": 1,
+    "infant_age_months": 10,
+    "rooms": 2
+  },
+  "origin_airport": "Newcastle",
+  "origin_code": "NCL",
+  "currency": "GBP",
+  "date_windows": [
+    {
+      "label": "full_range_7",
+      "start": "2026-06-20",
+      "end": "2026-07-15",
+      "nights": 7
+    },
+    {
+      "label": "full_range_10",
+      "start": "2026-06-20",
+      "end": "2026-07-12",
+      "nights": 10
+    }
+  ],
+  "destinations": [
+    {
+      "city": "Antalya",
+      "code": "AYT",
+      "country": "Turkey"
+    },
+    {
+      "city": "Dalaman",
+      "code": "DLM",
+      "country": "Turkey"
+    },
+    {
+      "city": "Bodrum",
+      "code": "BJV",
+      "country": "Turkey"
+    },
+    {
+      "city": "Burgas",
+      "code": "BOJ",
+      "country": "Bulgaria"
+    },
+    {
+      "city": "Hurghada",
+      "code": "HRG",
+      "country": "Egypt"
+    },
+    {
+      "city": "Sharm El Sheikh",
+      "code": "SSH",
+      "country": "Egypt"
+    },
+    {
+      "city": "Rhodes",
+      "code": "RHO",
+      "country": "Greece"
+    },
+    {
+      "city": "Kos",
+      "code": "KGS",
+      "country": "Greece"
+    },
+    {
+      "city": "Heraklion",
+      "code": "HER",
+      "country": "Greece"
+    },
+    {
+      "city": "Larnaca",
+      "code": "LCA",
+      "country": "Cyprus"
+    },
+    {
+      "city": "Paphos",
+      "code": "PFO",
+      "country": "Cyprus"
+    },
+    {
+      "city": "Palma",
+      "code": "PMI",
+      "country": "Spain"
+    },
+    {
+      "city": "Tenerife",
+      "code": "TFS",
+      "country": "Spain"
+    },
+    {
+      "city": "Faro",
+      "code": "FAO",
+      "country": "Portugal"
+    }
+  ],
+  "sites": [
+    {
+      "name": "TravelSupermarket Packages",
+      "type": "package",
+      "url_template": "https://www.travelsupermarket.com/en-gb/holidays/"
+    },
+    {
+      "name": "Jet2 Holidays",
+      "type": "package",
+      "url_template": "https://www.jet2holidays.com/airports/newcastle-airport"
+    },
+    {
+      "name": "TUI Holidays",
+      "type": "package",
+      "url_template": "https://www.tui.co.uk/holidays/holidays-from-newcastle-airport"
+    },
+    {
+      "name": "loveholidays",
+      "type": "package",
+      "url_template": "https://www.loveholidays.com/holidays/newcastle-airport-holidays.html"
+    },
+    {
+      "name": "On the Beach",
+      "type": "package",
+      "url_template": "https://www.onthebeach.co.uk/"
+    },
+    {
+      "name": "Google Flights",
+      "type": "flight",
+      "url_template": "https://www.google.com/travel/flights?q={google_flights_query}"
+    },
+    {
+      "name": "Skyscanner",
+      "type": "flight",
+      "url_template": "https://www.skyscanner.net/transport/flights/{origin}/{destination}/{depart}/{return_}/?adults=4&children=1&adultsv2=4&childrenv2=1&infants=1"
+    },
+    {
+      "name": "KAYAK",
+      "type": "flight",
+      "url_template": "https://www.kayak.co.uk/flights/{origin}-{destination}/{depart_iso}/{return_iso}?sort=bestflight_a"
+    },
+    {
+      "name": "Momondo",
+      "type": "flight",
+      "url_template": "https://www.momondo.co.uk/flight-search/{origin}-{destination}/{depart_iso}/{return_iso}?sort=bestflight_a"
+    },
+    {
+      "name": "Expedia Packages",
+      "type": "package",
+      "url_template": "https://www.expedia.co.uk/"
+    }
+  ],
+  "weights": {
+    "price": 0.46,
+    "review": 0.1,
+    "board_basis": 0.06,
+    "bags": 0.05,
+    "transfers": 0.04,
+    "beach": 0.12,
+    "pool": 0.07,
+    "heat": 0.08,
+    "cancellation": 0.01,
+    "family_fit": 0.01
+  },
+  "autopilot": {
+    "drop_threshold_gbp": 100,
+    "drop_threshold_pct": 0.06
+  },
+  "strategy": {
+    "buy_line_gbp": 3000,
+    "nearby_airport_adjustments": {
+      "Newcastle only": 0,
+      "Manchester": -250,
+      "Leeds Bradford": -150
+    },
+    "heat_month": 6,
+    "heat_floor_c": 25,
+    "default_day_shift_savings_gbp": 35,
+    "default_airport_mode": "Newcastle only",
+    "default_day_shift": 0,
+    "booking_threshold_gbp": 3000
+  },
+  "search_preferences": {
+    "cheap_first": true,
+    "prefer_hot": true,
+    "prefer_beach": true,
+    "prefer_pool": true,
+    "prefer_breakfast_or_better": true,
+    "prefer_free_child_places": true,
+    "prefer_family_room": true,
+    "min_temp_c": 26,
+    "target_beach_minutes": 10,
+    "prefer_true_price": true
+  },
+  "search_engine": {
+    "destination_count": 22,
+    "daily_departure_step": 1
+  },
+  "orchestration": {
+    "target_search_volume": 180,
+    "max_live_rows": 180,
+    "package_query_cap": 96,
+    "flight_query_cap": 40,
+    "deep_package_passes": 4,
+    "checkout_target_stage": "pre-payment",
+    "booking_stop_mode": "payment-page",
+    "target_candidates_per_site": 12,
+    "site_revisit_depth": 4
+  }
+}

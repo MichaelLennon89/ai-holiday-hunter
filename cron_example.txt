@@ -1,0 +1,3 @@
+# Example cron entry (Linux/macOS)
+# Run every day at 09:00
+0 9 * * * /absolute/path/to/project/.venv/bin/python /absolute/path/to/project/daily_runner.py --mode cheapest --limit 18 --max-flight-queries 12 --threshold 3000
